@@ -202,22 +202,20 @@ int GetAllocationFd(const tflite::Allocation* allocation) {
 Expected<LiteRtCompiledModelT::Ptr> LiteRtCompiledModelT::Create(
     LiteRtEnvironmentT* env, LiteRtModel model,
     LiteRtCompilationOptions jit_compilation_options) {
-  // If no compilation options were passed, we use default object. This allows
-  // us to add (for instance) accelerator compilation options.
-  std::unique_ptr<LiteRtCompilationOptionsT>
-      placeholder_jit_compilation_options;
   if (!jit_compilation_options) {
-    placeholder_jit_compilation_options =
-        std::make_unique<LiteRtCompilationOptionsT>();
-    jit_compilation_options = placeholder_jit_compilation_options.get();
+    return litert::ErrorStatusBuilder::InvalidArgument()
+           << "No compilation options passed.";
   }
 
   auto compiled_model = std::make_unique<LiteRtCompiledModelT>();
 
   LiteRtHwAcceleratorSet hardware_accelerators = kLiteRtHwAcceleratorNone;
-  if (jit_compilation_options) {
-    LiteRtGetCompilationOptionsHardwareAccelerators(jit_compilation_options,
-                                                    &hardware_accelerators);
+  LITERT_RETURN_IF_ERROR(LiteRtGetCompilationOptionsHardwareAccelerators(
+      jit_compilation_options, &hardware_accelerators));
+
+  if (hardware_accelerators == kLiteRtHwAcceleratorNone) {
+    return litert::ErrorStatusBuilder::InvalidArgument()
+           << "No acceleration provided.";
   }
 
   LITERT_RETURN_IF_ERROR(
