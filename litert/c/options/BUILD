@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC.
+# Copyright 2024 Google LLC.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,23 +14,30 @@
 
 package(
     # copybara:uncomment default_applicable_licenses = ["@org_tensorflow//tensorflow:license"],
-    default_visibility = ["//litert:litert_internal_users"],
+    default_visibility = ["//litert:litert_stable_abi_users"],
 )
 
 cc_library(
-    name = "xnnpack_accelerator",
-    srcs = ["xnnpack_accelerator.cc"],
-    hdrs = ["xnnpack_accelerator.h"],
+    name = "litert_qualcomm_options",
+    srcs = ["litert_qualcomm_options.cc"],
+    hdrs = ["litert_qualcomm_options.h"],
     deps = [
-        "//litert/c:litert_accelerator",
-        "//litert/c:litert_accelerator_registration",
+        "@com_google_absl//absl/strings:string_view",
         "//litert/c:litert_common",
         "//litert/c:litert_opaque_options",
-        "//litert/cc:litert_expected",
+        "//litert/cc:litert_detail",
         "//litert/cc:litert_macros",
-        "//litert/core:environment",
-        "//litert/runtime/accelerators:accelerator_implementation_helper",
-        "//tflite/c:c_api_types",
-        "//tflite/delegates/xnnpack:xnnpack_delegate",
+        "//litert/cc:litert_opaque_options",
+    ],
+)
+
+cc_test(
+    name = "litert_qualcomm_options_test",
+    srcs = ["litert_qualcomm_options_test.cc"],
+    deps = [
+        ":litert_qualcomm_options",
+        "@com_google_googletest//:gtest_main",
+        "//litert/c:litert_opaque_options",
+        "//litert/test:matchers",
     ],
 )
