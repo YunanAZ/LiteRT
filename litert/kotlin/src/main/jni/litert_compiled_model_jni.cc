@@ -9,11 +9,11 @@
 #include "absl/log/absl_check.h"  // from @com_google_absl
 #include "absl/strings/string_view.h"  // from @com_google_absl
 #include "litert/c/litert_common.h"
-#include "litert/c/litert_compilation_options.h"
 #include "litert/c/litert_compiled_model.h"
 #include "litert/c/litert_environment.h"
 #include "litert/c/litert_logging.h"
 #include "litert/c/litert_model.h"
+#include "litert/c/litert_options.h"
 #include "litert/c/litert_tensor_buffer.h"
 #include "litert/cc/litert_compiled_model.h"
 #include "litert/cc/litert_handle.h"
@@ -69,14 +69,14 @@ Java_com_google_ai_edge_litert_CompiledModel_nativeCreate(JNIEnv* env,
     }
   }
 
-  LiteRtCompilationOptions compilation_options = nullptr;
-  auto status = LiteRtCreateCompilationOptions(&compilation_options);
+  LiteRtOptions compilation_options = nullptr;
+  auto status = LiteRtCreateOptions(&compilation_options);
   if (status != kLiteRtStatusOk) {
     LITERT_LOG(LITERT_ERROR, "Failed to create compilation options.");
     return 0;
   }
-  status = LiteRtSetCompilationOptionsHardwareAccelerators(compilation_options,
-                                                           accelerators);
+  status =
+      LiteRtSetOptionsHardwareAccelerators(compilation_options, accelerators);
   if (status != kLiteRtStatusOk) {
     LITERT_LOG(LITERT_ERROR, "Failed to set hardware accelerators.");
     return 0;
