@@ -562,12 +562,14 @@ litert_device_test(
 #     name = "litert_compiled_model_gpu_test",
 #     srcs = ["litert_compiled_model_gpu_test.cc"],
 #     data = [
+#         "//litert/test:testdata/simple_cast_and_add_op.tflite",
 #         "//litert/test:testdata/simple_model.tflite",
 #     ],
 #     tags = [
 #         "requires-gpu-nvidia",
 #     ],
 #     deps = [
+#         ":litert_compilation_options",
 #         ":litert_compiled_model",
 #         ":litert_environment",
 #         ":litert_event",
