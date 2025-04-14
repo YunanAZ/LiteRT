@@ -42,7 +42,6 @@ cc_test(
         "//conditions:default": [],
     }),
     deps = [
-        ":litert_any",
         ":litert_compiled_model",
         ":litert_environment",
         ":litert_expected",
@@ -50,7 +49,7 @@ cc_test(
         "@com_google_googletest//:gtest_main",
         "@com_google_absl//absl/strings:string_view",
         "@com_google_absl//absl/types:span",
-        "//litert/c:litert_tensor_buffer",
+        "//litert/c:litert_common",
         "//litert/test:common",
         "//litert/test:matchers",
         "//litert/test:simple_model",
